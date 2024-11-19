@@ -78,11 +78,6 @@ function App() {
 
   return (
     <>
-      <Header
-        title={"Header"}
-        leftChild={<Button text={"Left"} />}
-        rightChild={<Button text={"Right"} />}
-      />
       <diaryStateContext.Provider value={data}>
         <diaryDispatchContext.Provider value={{ onCreate, onUpdate, onDelete }}>
           <Routes>
