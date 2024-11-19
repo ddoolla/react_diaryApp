@@ -12,15 +12,21 @@ import { createContext, useReducer, useRef } from "react";
 const mockData = [
   {
     id: 1,
-    createdDate: new Date().getTime(),
+    createdDate: new Date("2024-11-19").getTime(),
     emotionId: 1,
     content: "1번 일기 내용",
   },
   {
     id: 2,
-    createdDate: new Date().getTime(),
+    createdDate: new Date("2024-11-18").getTime(),
     emotionId: 2,
     content: "2번 일기 내용",
+  },
+  {
+    id: 3,
+    createdDate: new Date("2024-10-18").getTime(),
+    emotionId: 3,
+    content: "3번 일기 내용",
   },
 ];
 
@@ -38,12 +44,12 @@ function reducer(state, action) {
   return state;
 }
 
-const diaryStateContext = createContext();
-const diaryDispatchContext = createContext();
+export const diaryStateContext = createContext();
+export const diaryDispatchContext = createContext();
 
 function App() {
   const [data, dispatch] = useReducer(reducer, mockData);
-  const idRef = useRef(3);
+  const idRef = useRef(4);
 
   const onCreate = (createdDate, emotionId, content) => {
     dispatch({
