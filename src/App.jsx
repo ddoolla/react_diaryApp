@@ -5,6 +5,8 @@ import New from "./pages/New";
 import Diary from "./pages/Diary";
 import NotFound from "./pages/NotFound";
 import { getEmotionImage } from "./util/get-emotion-image";
+import Header from "./components/Header";
+import Button from "./components/Button";
 
 function App() {
   const nav = useNavigate();
@@ -15,13 +17,12 @@ function App() {
 
   return (
     <>
-      <div>
-        <img src={getEmotionImage(1)} />
-        <img src={getEmotionImage(2)} />
-        <img src={getEmotionImage(3)} />
-        <img src={getEmotionImage(4)} />
-        <img src={getEmotionImage(5)} />
-      </div>
+      <Header
+        title={"Header"}
+        leftChild={<Button text={"Left"} />}
+        rightChild={<Button text={"Right"} />}
+      />
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/new" element={<New />} />
