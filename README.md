@@ -43,11 +43,15 @@
 
 - #### useNavigate 훅 사용
   - 특정 이벤트 시 함수 호출 방식으로 사용 (버튼 등)
+  - 컴포넌트가 마운트되기 전에는 동작하지 않는다. -> useEffect 활용  
+    (이벤트 핸들러는 마운트 이후 동작이므로 관계 X)
 
 ```
 const nav = useNavigate();
 const onClick = () => { nav("/"); }
 ```
+
+※ React Router Dom 참조에서는 loader, action 에서 redirect 를 사용하는 것을 권장하는 내용이 있다.
 
 <br/>
 

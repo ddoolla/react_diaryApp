@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "./Button";
 import "./Editor.css";
 import EmotionItem from "./EmotionItem";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const emtionList = [
   {
@@ -44,13 +44,30 @@ const getStringedDate = (targetDate) => {
   return `${year}-${month}-${date}`;
 };
 
-const Editor = ({ onSubmit }) => {
+const Editor = ({ initData, onSubmit }) => {
   const nav = useNavigate();
+
   const [input, setInput] = useState({
     createdDate: new Date(),
     emotionId: 3,
     content: "",
   });
+
+  /* 
+    1. 수정하기 버튼 클릭
+    2. Edit 컴포넌트가 다이어리 아이디에 해당하는 데이터를 curDiaryItem 에 상태 저장
+    3. Editor 컴포넌트에 Props로 전달
+    4. Editor 컴포넌트에 useEffect 훅을 사용하여 마운트 된 후 input 값에 전달받은 initData 값을 세팅
+    5. input 요소 value 값에 아이디에 해당하는 데이터 출력
+  */
+  useEffect(() => {
+    if (initData) {
+      setInput({
+        ...initData,
+        createdDate: new Date(Number(initData.createdDate)),
+      });
+    }
+  }, [initData]);
 
   const onChangeInput = (e) => {
     let name = e.target.name;
