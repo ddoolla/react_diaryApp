@@ -49,6 +49,7 @@
 ```
 const nav = useNavigate();
 const onClick = () => { nav("/"); }
+const onClick = () => { nav("/", {replace: true}); } // 뒤로가기 방지
 ```
 
 ※ React Router Dom 참조에서는 loader, action 에서 redirect 를 사용하는 것을 권장하는 내용이 있다.
