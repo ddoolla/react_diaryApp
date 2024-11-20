@@ -12,6 +12,8 @@ const DiaryList = ({ data }) => {
     setSortType(e.target.value);
   };
 
+  // return 값이 0 보다 작은 경우 a 를 먼저 정렬, 즉 b가 a보다 큰 경우 a를 먼저 정렬
+  // return 값이 0 보다 큰 경우 b 를 먼저 정렬, 즉 a가 b보다 큰 경우 b 를 먼저 정렬
   const getSortedData = () => {
     return data.toSorted((a, b) => {
       if (sortType === "oldest") {
