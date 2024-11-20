@@ -2,7 +2,7 @@ import Header from "../components/Header";
 import Button from "../components/Button";
 import DiaryList from "../components/DiaryList";
 import { useContext, useState } from "react";
-import { diaryStateContext } from "../App";
+import { DiaryStateContext } from "../App";
 
 const getMonthlyData = (pivotDate, data) => {
   const beginTime = new Date(
@@ -29,7 +29,7 @@ const getMonthlyData = (pivotDate, data) => {
 };
 
 const Home = () => {
-  const data = useContext(diaryStateContext);
+  const data = useContext(DiaryStateContext);
   const [pivotDate, setPivotDate] = useState(new Date());
 
   const monthlyData = getMonthlyData(pivotDate, data);
