@@ -4,10 +4,13 @@ import Viewer from "../components/Viewer";
 import { useNavigate, useParams } from "react-router-dom";
 import useDiary from "../hooks/useDiary";
 import { getStringedDate } from "../util/get-stringed-date";
+import usePageTitle from "../hooks/usePageTitle";
 
 const Diary = () => {
   const params = useParams();
   const nav = useNavigate();
+
+  usePageTitle(`${params.id}번 일기`);
 
   /*  
     커스텀 훅인 useDiary로 반환받은 curDiaryItem에 처음에는 undefined가 들어간다.
