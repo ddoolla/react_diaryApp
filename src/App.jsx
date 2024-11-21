@@ -7,49 +7,70 @@ import Edit from "./pages/Edit";
 import NotFound from "./pages/NotFound";
 import Header from "./components/Header";
 import Button from "./components/Button";
-import { createContext, useReducer, useRef } from "react";
-
-const mockData = [
-  {
-    id: 1,
-    createdDate: new Date("2024-11-19").getTime(),
-    emotionId: 1,
-    content: "1번 일기 내용",
-  },
-  {
-    id: 2,
-    createdDate: new Date("2024-11-18").getTime(),
-    emotionId: 2,
-    content: "2번 일기 내용",
-  },
-  {
-    id: 3,
-    createdDate: new Date("2024-10-18").getTime(),
-    emotionId: 3,
-    content: "3번 일기 내용",
-  },
-];
+import { createContext, useReducer, useRef, useEffect, useState } from "react";
 
 function reducer(state, action) {
+  let nextState;
+
   switch (action.type) {
+    case "INIT":
+      return action.data;
     case "CREATE":
-      return [action.data, ...state];
+      nextState = [action.data, ...state];
+      break;
     case "UPDATE":
-      return state.map((item) =>
+      nextState = state.map((item) =>
         String(item.id) === String(action.data.id) ? action.data : item
       );
+      break;
     case "DELETE":
-      return state.filter((item) => String(item.id) !== String(action.id));
+      nextState = state.filter((item) => String(item.id) !== String(action.id));
+      break;
+    default:
+      return state;
   }
-  return state;
+
+  localStorage.setItem("diary", JSON.stringify(nextState));
+  return nextState;
 }
 
 export const DiaryStateContext = createContext();
 export const DiaryDispatchContext = createContext();
 
 function App() {
-  const [data, dispatch] = useReducer(reducer, mockData);
-  const idRef = useRef(4);
+  const [isLoading, setIsLoading] = useState(true);
+  const [data, dispatch] = useReducer(reducer, []);
+  const idRef = useRef(0);
+
+  useEffect(() => {
+    const storedData = localStorage.getItem("diary");
+    if (!storedData) {
+      setIsLoading(false);
+      return;
+    }
+
+    const parsedData = JSON.parse(storedData);
+
+    if (!Array.isArray(parsedData)) {
+      setIsLoading(false);
+      return;
+    }
+
+    let maxId = 0;
+    parsedData.forEach((item) => {
+      if (Number(item.id) > maxId) {
+        maxId = Number(item.id);
+      }
+    });
+
+    idRef.current = maxId;
+
+    dispatch({
+      type: "INIT",
+      data: parsedData,
+    });
+    setIsLoading(false);
+  }, []);
 
   const onCreate = (createdDate, emotionId, content) => {
     dispatch({
@@ -81,6 +102,16 @@ function App() {
       id,
     });
   };
+
+  /* 
+    현재 웹 스토리지에서 데이터를 가져와서 reducer 함수에 INIT 타입으로 데이터를 초기화 하고있다.
+    그런데 커스텀 훅인 useDiary에서 아이디 파라미터에 해당하는 데이터를 상세보기 페이지에서 출력하고 있는데,
+    새로고침을 하게되면 INIT을 하기 전에 useDiary 훅 부터 실행되면서 아이디 값에 해당하는 데이터를 찾지 못하는 현상이 발생한다.
+    때문에 불러온 데이터를 초기화하기 전에는 컴포넌트들이 렌더링되지 않도록 로딩중 기능을 추가한다.
+  */
+  if (isLoading) {
+    return <div>데이터 로딩중입니다...</div>;
+  }
 
   return (
     <>
