@@ -24,10 +24,10 @@
 
 ```
 <Routes>
-    <Route path="/diary/:id" uri={<Diary />} /> // :id - url parameter
-    <Route path="/Home" uri={<Home />} />
-    <Route path="/New" uri={<New />} />
-    <Route path="/*" uri={<NotFound />} />
+    <Route path="/diary/:id" element={<Diary />} /> // :id - url parameter
+    <Route path="/Home" element={<Home />} />
+    <Route path="/New" element={<New />} />
+    <Route path="/*" element={<NotFound />} />
 </Routes>
 ```
 
